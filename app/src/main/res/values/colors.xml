@@ -3,5 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="mainColor">#05D686</color>
+    <color name="colorMain">#05D686</color>
+    <color name="colorDivider">#BDBDBD</color>
+
+    <color name="bgGray">#e2e2e2</color>
+
+
+    <!-- Text Color -->
+    <color name="normalText">#b9000000</color>
+    <color name="hintText">#552d2d2d</color>
 </resources>

@@ -4,8 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="actionBarSize">48dp</item>
-        <item name="colorPrimary">@color/mainColor</item>
-        <item name="colorPrimaryDark">@color/mainColor</item>
+        <item name="colorPrimary">@color/colorMain</item>
+        <item name="colorPrimaryDark">@color/colorMain</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
