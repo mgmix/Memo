@@ -1,14 +1,13 @@
 package mgmix.dev.line.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
+import androidx.fragment.app.commitNow
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import dagger.android.support.DaggerFragment
 import mgmix.dev.line.R
 import mgmix.dev.line.databinding.FragmentHomeBinding
@@ -24,13 +23,7 @@ class HomeFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: HomeViewModelFactory
 
-    private lateinit var viewModel: HomeViewModel
-
-    @Inject
-    lateinit var homeListAdapter: HomeListAdapter
-//    private val homeListAdapter by lazy {
-//        HomeListAdapter()
-//    }
+    private val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,19 +41,22 @@ class HomeFragment : DaggerFragment() {
         addNote.setOnClickListener {
             activity.replace(R.id.container, DetailFragment())?.addToBackStack(null)?.commit()
         }
+
     }
 
     private fun FragmentHomeBinding.setView() {
-        viewModel = ViewModelProviders.of(
-            this@HomeFragment, viewModelFactory
-        )[HomeViewModel::class.java]
-
-
+        val homeListAdapter =  HomeListAdapter {
+            Log.d(TAG, "it: ${it.id} ::  ${it.title} ")
+        }
         with(itemList) {
             adapter = homeListAdapter
         }
 
-        homeListAdapter.items = viewModel.getNotes
+        viewModel.noteList.observe(viewLifecycleOwner) {
+            homeListAdapter.items = it
+        }
+
+        viewModel.getNotes()
     }
 
 

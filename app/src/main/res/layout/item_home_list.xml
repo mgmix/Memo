@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="mgmix.dev.line.repository.data.model.HomeItem" />
+            type="mgmix.dev.line.repository.data.model.NoteItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            setImage="@{item.thumbNailUrl}"
+            setImage="@{item.attachments.get(0)}"
             tools:src="@tools:sample/avatars"
             />
         
