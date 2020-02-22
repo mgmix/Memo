@@ -4,18 +4,12 @@ import androidx.room.*
 
 @Entity(tableName = "note")
 data class NoteEntity(
-    @PrimaryKey(autoGenerate = true)
-    val noteId: Int,
+    @PrimaryKey
+    @ColumnInfo(name = "keyId")
+    val keyId: Long,
+    @ColumnInfo(name = "title")
     val title: String?,
+    @ColumnInfo(name = "content")
     val content: String?
-
 )
 
-data class NoteWithAttachments(
-    @Embedded val note: NoteEntity,
-    @Relation(
-        parentColumn = "noteId",
-        entityColumn = "attachNoteId"
-    )
-    val attachments: List<AttachmentEntity>
-)

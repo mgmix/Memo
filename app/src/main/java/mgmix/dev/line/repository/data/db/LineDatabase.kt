@@ -5,19 +5,17 @@ import mgmix.dev.line.repository.data.model.NoteItem
 interface LineDatabase {
 
     // Database Event 정의
-    fun getAllNotes(): List<NoteItem>
+    suspend fun getAllNotes(): List<NoteItem>
 
-    // add - Insert
-    fun addNote(noteItem: NoteItem)
+    suspend fun addNote(noteItem: NoteItem)
 
-    // save - Update
-    fun saveNote()
+    suspend fun saveNote(noteItem: NoteItem)
 
     // delete - Delete
-    fun deleteNote()
+    suspend fun deleteNote(id: NoteItem)
 
     // get - get
-    fun getNoteDetail()
+    suspend fun getNoteDetail(keyId: Long): NoteItem
 
 
 }

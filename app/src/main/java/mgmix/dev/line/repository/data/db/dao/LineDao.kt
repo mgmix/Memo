@@ -1,15 +1,17 @@
 package mgmix.dev.line.repository.data.db.dao
 
-import androidx.room.*
-import mgmix.dev.line.repository.data.db.entity.AttachmentEntity
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import mgmix.dev.line.repository.data.db.entity.NoteEntity
-import mgmix.dev.line.repository.data.db.entity.NoteWithAttachments
 
 @Dao
 interface LineDao {
 
-    @Insert
-    suspend fun addNote(note: NoteEntity, attachment: AttachmentEntity? = null)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addNote(note: NoteEntity)
+//    suspend fun addNote(note: NoteEntity, attachment: AttachmentEntity? = null)
 
 //    @Update
 //    suspend fun updateNote()
@@ -26,9 +28,10 @@ interface LineDao {
     @Query("SELECT * FROM note")
     suspend fun getAllNotes(): List<NoteEntity>
 
-    @Transaction
-    @Query("SELECT * FROM note")
-    suspend fun getNoteWithAttachments(): List<NoteWithAttachments>
+    @Query("SELECT * FROM note WHERE keyId = :keyId")
+    suspend fun getNoteDetail(keyId: Long): NoteEntity
+
+
 
 
 }
