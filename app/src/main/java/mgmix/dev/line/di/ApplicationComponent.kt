@@ -6,6 +6,7 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import mgmix.dev.line.LineApp
+import mgmix.dev.line.di.ui.DetailModule
 import mgmix.dev.line.di.ui.HomeModule
 import javax.inject.Singleton
 
@@ -16,6 +17,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         Binder::class,
         HomeModule::class,
+        DetailModule::class,
         LocalModule::class,
         RepositoryModule::class
     ])
