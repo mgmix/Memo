@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Line</string>
     <string name="hint_title">Title</string>
+
+    <string-array name="attachments">
+        <item>"카메라"</item>
+        <item>"갤러리"</item>
+        <item>"링크"</item>
+    </string-array>
 </resources>

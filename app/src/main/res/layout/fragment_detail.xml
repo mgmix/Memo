@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="mgmix.dev.line.ui.detail.DetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,6 +44,7 @@
                 android:textColor="@color/normalText"
                 android:textColorHint="@color/hintText"
                 android:textSize="18sp"
+                android:text="@{viewModel.item.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/detailHeader" />
@@ -64,6 +67,7 @@
                 android:textColor="@color/normalText"
                 android:textColorHint="@color/hintText"
                 android:textSize="18sp"
+                android:text="@{viewModel.item.contents}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
