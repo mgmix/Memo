@@ -17,7 +17,7 @@ interface LineRepository {
 
     // fetch
     suspend fun getAllNotes(): List<NoteItem>
-    suspend fun getNoteDetail(id: Int)
+    suspend fun getNoteDetail(keyId: Long): NoteItem
 
 
 
