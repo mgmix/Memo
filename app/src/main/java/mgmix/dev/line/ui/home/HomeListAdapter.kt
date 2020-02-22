@@ -39,7 +39,6 @@ class HomeListAdapter(
         holder.bind(items[position])
     }
 
-
     class HomeListViewHolder(private val binding: ItemHomeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

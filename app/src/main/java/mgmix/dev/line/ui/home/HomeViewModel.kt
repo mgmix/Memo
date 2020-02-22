@@ -1,5 +1,6 @@
 package mgmix.dev.line.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,11 +10,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mgmix.dev.line.repository.LineRepository
 import mgmix.dev.line.repository.data.model.NoteItem
+import mgmix.dev.line.ui.detail.DetailViewModel
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val repository: LineRepository
 ): ViewModel() {
+
+    init {
+        Log.d(TAG, "HomeViewModel Injection ... ")
+    }
 
     private val _noteList = MutableLiveData<List<NoteItem>>()
     val noteList: LiveData<List<NoteItem>>
@@ -25,6 +31,10 @@ class HomeViewModel @Inject constructor(
                 repository.getAllNotes()
             }
         }
+    }
+
+    companion object {
+        const val TAG = "HomeViewModel"
     }
 
 
