@@ -8,17 +8,11 @@ import mgmix.dev.line.repository.data.db.entity.NoteWithAttachments
 @Dao
 interface LineDao {
 
-    @Transaction
-    suspend fun addNoteWithAttachments(note: NoteEntity, attachments: List<AttachmentEntity>) {
-        addNote(note)
-        addAttachments(attachments)
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addNote(note: NoteEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNote(note: NoteEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAttachments(attachments: List<AttachmentEntity>)
+    fun addAttachments(attachments: List<AttachmentEntity>)
 
 
     @Query("DELETE FROM note WHERE keyId = :keyId")

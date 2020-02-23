@@ -17,7 +17,8 @@ class LineDatabaseImpl(
         noteItem: NoteItem,
         attachments: List<AttachmentItem>
     ) {
-        lineDao.addNoteWithAttachments(noteItem.toEntity(), attachments.map { it.toEntity() })
+        lineDao.addNote(noteItem.toEntity())
+        if (attachments.isNotEmpty()) lineDao.addAttachments(attachments.map { it.toEntity() })
     }
 
     // Delete
@@ -30,10 +31,6 @@ class LineDatabaseImpl(
     }
 
     // Get
-    override suspend fun getAllNotes(): List<NoteItem> {
-        return lineDao.getAllNotes().map { it.toModel() }
-    }
-
     override suspend fun getNoteWithAttachments(): List<NoteItem> {
         return lineDao.getNoteWithThumbNail().map {
             it.toModel()

@@ -6,8 +6,6 @@ import mgmix.dev.line.repository.data.model.NoteItem
 interface LineDatabase {
 
     // Database Event 정의
-    suspend fun getAllNotes(): List<NoteItem>
-
     suspend fun getNoteWithAttachments(): List<NoteItem>
 
     suspend fun addNoteWithAttachments(noteItem: NoteItem, attachments: List<AttachmentItem>)
