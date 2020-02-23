@@ -52,8 +52,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:scaleType="fitXY"
+            app:setImage="@{item.attachments[0].path}"
             android:adjustViewBounds="true"
-            setImage="@{item.attachments.get(0)}"
             tools:src="@tools:sample/avatars"
             />
         

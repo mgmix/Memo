@@ -28,6 +28,7 @@
             >
 
             <TextView
+                android:id="@+id/showEmpty"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="저장된 노트가 없습니다"
