@@ -1,5 +1,7 @@
 package mgmix.dev.line.ext
 
+import android.content.Context
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -22,5 +24,9 @@ fun FragmentActivity?.replace(
     return this?.supportFragmentManager?.beginTransaction()?.replace(
         containerViewId, fragment, tag
     )
+}
+
+fun Context.toast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
