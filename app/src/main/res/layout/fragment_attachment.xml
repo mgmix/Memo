@@ -4,7 +4,9 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="mgmix.dev.line.ui.detail.ShareViewModel" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,18 +27,32 @@
                 >
 
                 <TextView
+                    android:id="@+id/count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_gravity="end"
-                    android:drawableStart="@drawable/ic_attach_file_black_24dp"
+                    android:drawableStart="@drawable/ic_attach_file_white_24dp"
                     android:text="첨부 이미지"
                     android:textColor="@android:color/white"
                     />
 
             </FrameLayout>
 
-
+            <TextView
+                android:id="@+id/showEmpty"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="첨부 이미지가 없습니다"
+                android:textSize="18sp"
+                android:textColor="@color/hintText"
+                android:gravity="center_horizontal|center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/bottomHeader"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/bottomItemList"
                 android:layout_width="0dp"

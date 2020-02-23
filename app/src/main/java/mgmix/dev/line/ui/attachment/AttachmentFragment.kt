@@ -4,17 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import dagger.android.support.DaggerFragment
+import mgmix.dev.line.R
 import mgmix.dev.line.databinding.FragmentAttachmentBinding
 import mgmix.dev.line.ui.detail.ShareViewModel
-import mgmix.dev.line.ui.detail.SharedViewModelFactory
-import javax.inject.Inject
 
 
 class AttachmentFragment : DaggerFragment() {
@@ -22,10 +17,15 @@ class AttachmentFragment : DaggerFragment() {
     private lateinit var binding: FragmentAttachmentBinding
 
     private val mAdapter by lazy {
-        AttachmentAdapter()
+        AttachmentAdapter {
+            it.id?.let { attachId ->
+                viewModel.removeAttachment(attachId)
+            }
+            viewModel.attachments.remove(it)
+        }
     }
 
-    private val viewModel: ShareViewModel by viewModels ({requireParentFragment()})
+    private val viewModel: ShareViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +45,13 @@ class AttachmentFragment : DaggerFragment() {
 
         viewModel.attachments.observe(viewLifecycleOwner, Observer {
             mAdapter.items = it
+            count.text = getString(R.string.attach_count, it.count())
+            if (it.isEmpty()) showEmpty.visibility = View.VISIBLE else showEmpty.visibility = View.GONE
+        })
+
+        viewModel.mode.observe(viewLifecycleOwner, Observer {
+
         })
 
     }
-
 }

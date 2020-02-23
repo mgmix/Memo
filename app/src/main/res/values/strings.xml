@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Line</string>
     <string name="hint_title">Title</string>
-
+    <string name="attach_count">첨부 이미지 %d 개</string>
     <string-array name="attachments">
         <item>"카메라"</item>
         <item>"갤러리"</item>

@@ -3,6 +3,7 @@ package mgmix.dev.line.ui.attachment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,9 @@ import mgmix.dev.line.R
 import mgmix.dev.line.databinding.ItemAttachmentsBinding
 import mgmix.dev.line.repository.data.model.AttachmentItem
 
-class AttachmentAdapter
+class AttachmentAdapter(
+    private val itemClickListener: (AttachmentItem) -> Unit
+)
     : RecyclerView.Adapter<AttachmentAdapter.DetailAttachViewHolder>() {
 
     var items: List<AttachmentItem> = emptyList()
@@ -28,16 +31,15 @@ class AttachmentAdapter
             parent,
             false
         )
-    ).apply {
-        itemView.setOnClickListener {
-            Log.e(TAG, "keyId: ${items[adapterPosition].keyId} id: ${items[adapterPosition].id}")
-        }
-    }
+    )
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: DetailAttachViewHolder, position: Int) {
         holder.bind(items[position])
+        holder.delete.setOnClickListener {
+            itemClickListener(items[position])
+        }
     }
 
 
@@ -47,6 +49,8 @@ class AttachmentAdapter
         fun bind(items: AttachmentItem) {
             binding.item = items
         }
+
+        val delete: ImageButton = binding.delete
     }
 
     companion object {
