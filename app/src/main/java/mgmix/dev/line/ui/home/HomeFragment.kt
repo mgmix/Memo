@@ -50,7 +50,6 @@ class HomeFragment : DaggerFragment() {
 
     private fun FragmentHomeBinding.initView() {
         val homeListAdapter =  HomeListAdapter {
-            Log.d(TAG, "KeyId: ${it.keyId} ")
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.container, DetailFragment::class.java, bundleOf("keyId" to it.keyId))

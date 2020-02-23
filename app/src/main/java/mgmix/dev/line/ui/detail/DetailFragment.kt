@@ -218,7 +218,6 @@ class DetailFragment : DaggerFragment(), ViewModelStoreOwner, OnBackPressedListe
                 "확인"
             ) { _, _ ->
                 val url = editText.text.toString()
-                Log.d(TAG, "url: $url");
                 if (URLUtil.isValidUrl(url)) {
                     viewModel.addAttachment(url, "")
                 } else {

@@ -1,6 +1,5 @@
 package mgmix.dev.line.repository
 
-import android.util.Log
 import mgmix.dev.line.repository.data.db.LineDatabase
 import mgmix.dev.line.repository.data.model.AttachmentItem
 import mgmix.dev.line.repository.data.model.NoteItem
@@ -27,7 +26,6 @@ internal class LineRepositoryImpl(
     }
 
     override suspend fun getNoteDetail(keyId: Long): NoteItem {
-        Log.e("LineRepository", "keyId: $keyId")
         return local.getNoteDetail(keyId)
     }
 }

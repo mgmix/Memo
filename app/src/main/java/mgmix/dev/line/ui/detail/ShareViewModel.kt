@@ -1,7 +1,6 @@
 package mgmix.dev.line.ui.detail
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,9 +53,7 @@ class ShareViewModel @Inject constructor(
         }
     }
 
-    // Fix
     fun addNote() {
-        Log.d(TAG, "addNote(): ");
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _keyId.value?.let {
@@ -102,15 +99,12 @@ class ShareViewModel @Inject constructor(
                 )
             )
         }
-        Log.d(TAG, "attachmentValue: ${_attachments.value}")
     }
 
-    // Fix
     fun saveMode(mode: Boolean) {
         _mode.postValue(mode)
     }
 
-    // Fix
     fun setKeyId(keyId: Long) {
         _keyId.value = keyId
     }
