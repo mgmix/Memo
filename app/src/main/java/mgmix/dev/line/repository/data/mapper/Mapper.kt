@@ -2,21 +2,38 @@ package mgmix.dev.line.repository.data.mapper
 
 import mgmix.dev.line.repository.data.db.entity.AttachmentEntity
 import mgmix.dev.line.repository.data.db.entity.NoteEntity
+import mgmix.dev.line.repository.data.db.entity.NoteWithAttachments
+import mgmix.dev.line.repository.data.model.AttachmentItem
 import mgmix.dev.line.repository.data.model.NoteItem
 
-// Join 으로 대체
-//internal fun NoteItem.toNoteWithAttachments(): NoteWithAttachments {
-//    return NoteWithAttachments(
-//        note = NoteEntity(
-//            noteId = id ?: -1,
-//            title = title,
-//            content = contents
-//        ),
-//        attachments = attachments
-//    )
-//}
+internal fun NoteEntity.toModel(): NoteItem {
+    return NoteItem(
+        keyId = keyId,
+        title = title,
+        contents = content,
+        attachments = emptyList()
+    )
+}
 
-internal fun NoteItem.toNoteEntity(): NoteEntity {
+fun NoteWithAttachments.toModel(): NoteItem {
+    return NoteItem(
+        keyId = note.keyId,
+        title = note.title,
+        contents = note.content,
+        attachments = attachments.map { it.toModel() }
+    )
+}
+
+fun AttachmentEntity.toModel(): AttachmentItem {
+    return AttachmentItem(
+        id = attachId,
+        keyId = attachNoteId,
+        path = path,
+        desc = desc
+    )
+}
+
+internal fun NoteItem.toEntity(): NoteEntity {
     return NoteEntity(
         keyId = keyId,
         title = title,
@@ -24,31 +41,11 @@ internal fun NoteItem.toNoteEntity(): NoteEntity {
     )
 }
 
-internal fun NoteEntity.toNoteItem(): NoteItem {
-    return NoteItem(
-        keyId = keyId,
-        title = title,
-        contents = content
+fun AttachmentItem.toEntity(): AttachmentEntity {
+    return AttachmentEntity(
+        attachId = 0,
+        attachNoteId = keyId,
+        path = path,
+        desc = desc
     )
 }
-
-//internal fun NoteItem.toAttachmentEntity(): AttachmentEntity {
-//    return AttachmentEntity(
-//        attachNoteId = keyId,
-//        path = attachments.map { it }
-//
-//    )
-//}
-
-
-
-
-//internal fun NoteWithAttachments.toNoteItem(): NoteItem {
-//    return NoteItem(
-//        id = note.noteId,
-//        title = note.title,
-//        contents = note.content,
-//        attachments = attachments
-//    )
-//}
-
