@@ -36,5 +36,4 @@ class HomeViewModel @Inject constructor(
         const val TAG = "HomeViewModel"
     }
 
-
 }
