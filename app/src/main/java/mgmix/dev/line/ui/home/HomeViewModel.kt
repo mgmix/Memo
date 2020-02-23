@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mgmix.dev.line.repository.LineRepository
 import mgmix.dev.line.repository.data.model.NoteItem
-import mgmix.dev.line.ui.detail.DetailViewModel
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(

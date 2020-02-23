@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.add
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import dagger.android.support.DaggerFragment
@@ -14,7 +13,6 @@ import mgmix.dev.line.R
 import mgmix.dev.line.databinding.FragmentHomeBinding
 import mgmix.dev.line.databinding.HeaderHomeBinding
 import mgmix.dev.line.ext.replace
-import mgmix.dev.line.ui.Mode
 import mgmix.dev.line.ui.detail.DetailFragment
 import javax.inject.Inject
 
