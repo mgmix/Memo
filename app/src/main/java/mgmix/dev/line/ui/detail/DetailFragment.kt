@@ -1,29 +1,39 @@
 package mgmix.dev.line.ui.detail
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
+import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
+import mgmix.dev.line.BuildConfig
 import mgmix.dev.line.R
 import mgmix.dev.line.databinding.FragmentDetailBinding
 import mgmix.dev.line.databinding.HeaderDetailBinding
 import mgmix.dev.line.ext.toast
 import mgmix.dev.line.ui.OnBackPressedListener
 import mgmix.dev.line.ui.attachment.AttachmentFragment
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class DetailFragment : DaggerFragment(),ViewModelStoreOwner, OnBackPressedListener {
+class DetailFragment : DaggerFragment(), ViewModelStoreOwner, OnBackPressedListener {
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var attachmentBehavior: BottomSheetBehavior<FrameLayout>
@@ -32,7 +42,7 @@ class DetailFragment : DaggerFragment(),ViewModelStoreOwner, OnBackPressedListen
     lateinit var viewModelFactory: SharedViewModelFactory
 
     private val viewModel: ShareViewModel by viewModels { viewModelFactory }
-
+    private var currentPhotoPath: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,31 +82,17 @@ class DetailFragment : DaggerFragment(),ViewModelStoreOwner, OnBackPressedListen
             onBackPressed()
         }
 
-        // Temp: move Floating or bottom fragment
         attach.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setIcon(R.drawable.ic_attach_file_black_24dp)
                 .setTitle("이미지 추가")
                 .setItems(
                     R.array.attachments
-                ) { dialog, which ->
+                ) { _, which ->
                     when (which) {
-                        0 -> {
-                            Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                                resolveActivity(requireContext().packageManager)?.let {
-                                    startActivityForResult(this, REQUEST_CAMERA)
-                                }
-                            }
-                        }
-                        1 -> {
-                            Intent(Intent.ACTION_PICK).apply {
-                                type = MediaStore.Images.Media.CONTENT_TYPE
-                                startActivityForResult(this, REQUEST_ALBUM)
-                            }
-                        }
-                        2 -> {
-                            // TextBox Popup Url Link
-                        }
+                        0 -> requestCamera()
+                        1 -> requestAlbumPick()
+                        2 -> requestUrlImage()
                     }
                 }
                 .show()
@@ -153,27 +149,24 @@ class DetailFragment : DaggerFragment(),ViewModelStoreOwner, OnBackPressedListen
     private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode) {
-
+        when (requestCode) {
             REQUEST_CAMERA -> {
-                Log.e(TAG, "camera data: ${data?.data}")
+                if( resultCode == Activity.RESULT_OK) {
+                    viewModel.addAttachment(currentPhotoPath, "")
+                }
             }
-
             REQUEST_ALBUM -> {
-                Log.e(TAG, "album data: ${data?.data}")
-                viewModel.addAttachment(data?.data.toString(), "test")
-
+                if (resultCode == Activity.RESULT_OK){
+                    viewModel.addAttachment(data?.data.toString(), "")
+                }
             }
-
         }
     }
 
@@ -182,9 +175,79 @@ class DetailFragment : DaggerFragment(),ViewModelStoreOwner, OnBackPressedListen
         parentFragmentManager.popBackStack()
     }
 
+    private fun requestCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+            intent.resolveActivity(requireContext().packageManager)?.also {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (e: IOException) {
+                    null
+                }
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    photoFile?.also {
+                        val photoUri: Uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "${BuildConfig.APPLICATION_ID}.fileProvider",
+                            it
+                        )
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                        startActivityForResult(intent, REQUEST_CAMERA)
+                    }
+                } else {
+                    val photoUri = Uri.fromFile(photoFile)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    startActivityForResult(intent, REQUEST_CAMERA)
+                }
+            }
+        }
+    }
+
+    private fun requestAlbumPick(){
+        Intent(Intent.ACTION_PICK).apply {
+            type = MediaStore.Images.Media.CONTENT_TYPE
+            startActivityForResult(this, REQUEST_ALBUM)
+        }
+    }
+
+    private fun requestUrlImage(){
+        val editText = EditText(requireContext())
+        AlertDialog.Builder(requireContext())
+            .setTitle("URL 주소 입력")
+            .setView(editText)
+            .setPositiveButton(
+                "확인"
+            ) { _, _ ->
+                val url = editText.text.toString()
+                Log.d(TAG, "url: $url");
+                if (URLUtil.isValidUrl(url)) {
+                    viewModel.addAttachment(url, "")
+                } else {
+                    requireContext().toast("유효하지 않은 URL 입니다.")
+                }
+            }
+            .setNegativeButton("취소") { dialogInterface, _ -> dialogInterface.cancel() }
+            .show()
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).format(Date())
+        val storageDir = File("${requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM)}")
+        if (!storageDir.exists()) storageDir.mkdir()
+        return File.createTempFile(
+            "LINE_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
+
+
     companion object {
         private const val TAG = "DetailFragment"
         private const val REQUEST_CAMERA = 1000
-        private const val REQUEST_ALBUM =  1001
+        private const val REQUEST_ALBUM = 1001
     }
 }
