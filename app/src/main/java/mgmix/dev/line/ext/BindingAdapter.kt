@@ -4,14 +4,18 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
+import mgmix.dev.line.R
 
 @BindingAdapter("app:setImage")
-fun setImage(view: ImageView, url: String?) {
-    // TODO if null delete imageView
-    Glide.with(view.context)
-        .load(url)
-        .into(view)
+fun setImage(view: ImageView, path: String?) {
+    if (path != null) {
+        Glide.with(view.context)
+            .load(path)
+            .error(R.drawable.ic_error_black_24dp)
+            .into(view)
+    }
 }
 
 @BindingAdapter("app:setVisible")
