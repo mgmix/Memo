@@ -13,3 +13,10 @@ data class NoteEntity(
     val content: String?
 )
 
+data class NoteWithAttachments(
+    @Embedded
+    val note: NoteEntity,
+
+    @Relation(parentColumn = "keyId", entityColumn = "attachNoteId")
+    val attachments: List<AttachmentEntity> = emptyList()
+)

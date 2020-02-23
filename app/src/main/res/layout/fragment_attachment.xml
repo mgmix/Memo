@@ -41,6 +41,8 @@
                 android:id="@+id/bottomItemList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/bottomHeader"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
