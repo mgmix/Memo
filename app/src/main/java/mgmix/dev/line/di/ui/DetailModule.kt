@@ -7,7 +7,7 @@ import mgmix.dev.line.ui.detail.SharedViewModelFactory
 
 @Module
 class DetailModule {
-    // TODO ViewholderFactory 하나로 묶고 Module 또한 통합하기
+
     @Provides
     fun provideViewModelFactory(
         repository: LineRepository
