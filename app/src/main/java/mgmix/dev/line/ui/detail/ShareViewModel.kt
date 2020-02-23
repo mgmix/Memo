@@ -35,10 +35,9 @@ class ShareViewModel @Inject constructor(
     val attachments: LiveDataList<AttachmentItem>
         get() = _attachments
 
+
     val mTitle = MutableLiveData<String>()
     val mContent = MutableLiveData<String>()
-
-    val attachmentList: MutableList<AttachmentItem> = mutableListOf()
 
     // Fix
     fun getNoteDetail() {
@@ -57,6 +56,7 @@ class ShareViewModel @Inject constructor(
 
     // Fix
     fun addNote() {
+        Log.d(TAG, "addNote(): ");
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _keyId.value?.let {
@@ -74,7 +74,6 @@ class ShareViewModel @Inject constructor(
         }
     }
 
-    // Attachments 도 같이 삭제하도록 추가
     fun deleteNote() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -93,7 +92,6 @@ class ShareViewModel @Inject constructor(
 
 
     fun addAttachment(path: String, desc: String) {
-        Log.e(TAG, "path: $path")
         _keyId.value?.let {
             _attachments.add(
                 AttachmentItem(
@@ -115,10 +113,6 @@ class ShareViewModel @Inject constructor(
     // Fix
     fun setKeyId(keyId: Long) {
         _keyId.value = keyId
-    }
-
-    fun getModeVisibility(): Int {
-        return if (mode.value == true) View.VISIBLE else View.GONE
     }
 
     companion object {
