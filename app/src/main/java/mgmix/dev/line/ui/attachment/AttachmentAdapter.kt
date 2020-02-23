@@ -2,10 +2,13 @@ package mgmix.dev.line.ui.attachment
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import mgmix.dev.line.R
 import mgmix.dev.line.databinding.ItemAttachmentsBinding
@@ -17,6 +20,12 @@ class AttachmentAdapter(
     : RecyclerView.Adapter<AttachmentAdapter.DetailAttachViewHolder>() {
 
     var items: List<AttachmentItem> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var mode: Boolean = false
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -37,6 +46,7 @@ class AttachmentAdapter(
 
     override fun onBindViewHolder(holder: DetailAttachViewHolder, position: Int) {
         holder.bind(items[position])
+        if (mode) holder.delete.visibility = View.VISIBLE else holder.delete.visibility = View.GONE
         holder.delete.setOnClickListener {
             itemClickListener(items[position])
         }

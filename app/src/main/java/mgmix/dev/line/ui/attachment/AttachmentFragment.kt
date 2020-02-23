@@ -50,7 +50,7 @@ class AttachmentFragment : DaggerFragment() {
         })
 
         viewModel.mode.observe(viewLifecycleOwner, Observer {
-
+            mAdapter.mode = it
         })
 
     }
