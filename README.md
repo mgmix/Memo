@@ -4,6 +4,11 @@ A simple memo application project for practice
 
 I made this to practice AAC Jetpack with MVVM and Dagger2, So I think this project mayby fall short of  general level
 
+
+## Screen Sample
+
+<img src="https://github.com/mgmix/Memo/blob/master/memo.gif" height="480">
+
 ## Explanation feature
 
 - Create/Read/Modify/Delete memo
@@ -28,3 +33,6 @@ I made this to practice AAC Jetpack with MVVM and Dagger2, So I think this proje
 - Glide
 
 
+## Reference Architecture
+
+<img src="https://github.com/mgmix/Memo/blob/master/Architecture.png" width="50%">
